@@ -9,6 +9,8 @@ import java.util.List;
 
 import controllers.IdController;
 import controllers.MessageController;
+import models.Id;
+import models.Message;
 import youareell.YouAreEll;
 
 // Simple Shell is a Console view for youareell.YouAreEll.
@@ -22,7 +24,8 @@ public class SimpleShell {
     public static void main(String[] args) throws java.io.IOException {
 
         YouAreEll webber = new YouAreEll(new MessageController(), new IdController());
-        
+        IdController idController = new IdController();
+        MessageController messageController = new MessageController();
         String commandLine;
         BufferedReader console = new BufferedReader
                 (new InputStreamReader(System.in));
@@ -67,17 +70,22 @@ public class SimpleShell {
                 // Specific Commands.
 
                 // ids
-                if (list.contains("ids")) {
-                    String results = webber.get_ids();
-                    SimpleShell.prettyPrint(results);
-                    continue;
-                }
+
+                    if (list.contains("ids")) {
+                        ArrayList<Id> results = idController.parseId(idController.getIds());
+                        for (Id idInResults : results) {
+                            SimpleShell.prettyPrint(idInResults.getGithub() + " " + idInResults.getName() + "\n");
+                        } continue;
+                    }
+
 
                 // messages
                 if (list.contains("messages")) {
-                    String results = webber.get_messages();
-                    SimpleShell.prettyPrint(results);
-                    continue;
+                    ArrayList<Message> results = messageController.getMessages();
+                    for (Message idInResults : results) {
+                        SimpleShell.prettyPrint(idInResults.getGithub() + " " + idInResults.getName() + "\n");
+                    } continue;
+
                 }
                 // you need to add a bunch more.
 
